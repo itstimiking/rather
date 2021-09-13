@@ -13,7 +13,7 @@ of which user is selected. Once the user logs in, the home page should be shown.
 We always want to make sure we know who the logged in user is, so information about the logged in user 
 should appear on the page. If someone tries to navigate anywhere by entering the address in the address 
 bar, the user is asked to sign in and then the requested page is shown. The application allows the user 
-to log out and log back in.
+to log out and log back in.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
 
 Once the user logs in, the user should be able to toggle between his/her answered and unanswered polls on
 the home page, which is located at the root. The polls in both categories are arranged from the most 
