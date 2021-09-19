@@ -1,9 +1,13 @@
-import React from 'react'
+import React from 'react';
+import Question from '../components/Question';
+
 
 function home() {
     return (
-        <div>
-            Hello world;
+        <div className="flex justify-center w-full">
+
+            <Question />
+
         </div>
     )
 }
