@@ -1,10 +1,46 @@
-import React from 'react';
-
+import React,{useState, useEffect} from 'react';
+import { useHistory } from "react-router-dom";
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchAllUsers,setUser} from '../redux/reducers/slices/users';        
 
 
 const avatar = "/logo192.png";
 
 function Auth() {
+
+    const dispatch = useDispatch();
+    const history = useHistory(); 
+
+    const users = useSelector(state => state.users.users);
+
+    const [userId, setUserId] = useState("none");
+    const [allUsers, setAllUsers] = useState({})
+
+    useEffect(()=>{
+
+        if(Object.keys(users).length < 1){
+            dispatch(fetchAllUsers())
+            
+        }else{
+            setAllUsers(users)
+        }
+
+    }, [users])
+
+    const handleChange = (e)=>{
+        e.preventDefault();
+        setUserId(e.target.value)
+
+        const user = allUsers[e.target.value];
+        dispatch(setUser(user))
+    }
+
+    const login = () => {
+        if(allUsers[userId] !== undefined){
+            history.push(`/questions`)
+            console.log(userId + "::::::::::::")
+        }
+    }
     return (
         <div className="flex justify-center w-full">
             <div className="w-full lg:w-1/2 md:w-full min-h-0 border-2 rounded-xl overflow-hidden">
@@ -26,12 +62,13 @@ function Auth() {
                         <fieldset>
                             <select
                                 className="border-2 h-12 w-full rounded-md px-4 select-user"
+                                value={userId}
+                                onChange={handleChange}
                             >
-                                <option disabled>Select User Account</option>
-                                <option value="timi">Timi Two</option>
-                                <option value="timi">Timi three</option>
-                                <option value="timi">Timi Four</option>
-                                <option value="timi">Timi five</option>
+                                <option disabled value="none">Select User Account</option>
+                                <option value="sarahedo"> Sara Hedo </option>
+                                <option value="tylermcginnis"> Tyler McGinnis </option>
+                                <option value="johndoe"> John Doe </option>
                                 
                             </select> 
                         </fieldset><br/>

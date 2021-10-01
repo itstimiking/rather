@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 function New() {
     return (
@@ -43,4 +43,4 @@ function New() {
     )
 }
 
-export default New
+export default New;

@@ -5,10 +5,10 @@ function NavLinks() {
     return (
         <ul 
             className="list-none font-bold pb-2 h-full items-end" 
-            role="navigation w-2/5"
+            role="navigation"
         >
             <li>
-                <Link to="/"> Home </Link>
+                <Link to="/questions"> Home </Link>
             </li>
 
             <li>
