@@ -18,7 +18,7 @@ function Nav() {
 
             <div className="w-5/6 h-full flex justify-between">
 
-                {(user?.id && location.pathname !== "/" ) ? <NavLinks /> : <div className="pb-2 h-full items-end flex font-bold">Would You Rather Game</div>}
+                {user?.id ? <NavLinks /> : <div className="pb-2 h-full items-end flex font-bold">Would You Rather Game</div>}
 
                 <NavAvatar />
                 

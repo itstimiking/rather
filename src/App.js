@@ -21,8 +21,8 @@ function App() {
             <div className="w-5/6 min-h-0 mx-auto my-10">
 
                 <Switch>
-                    <Route exact path="/" component={Auth} />
-                    <Route path="/questions" component={user?.id ? Home : Auth} />
+                    <Route exact path="/" component={user?.id ? Home : Auth} />
+                    <Route path="/auth" component={Auth} />
                     <Route path="/question/:questionID" component={user?.id ? questionID: Auth} />
                     <Route path="/new" component={user?.id ? New : Auth} />
                     <Route path="/board" component={user?.id ? Board : Auth} />
