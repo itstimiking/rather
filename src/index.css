@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+nav ul{
+    display: flex;
+}
+
+.list-none li{
+    display: inline-flex;
+    margin-right: 30px;
+}
+
+@layer base {
+    *{
+        @apply box-border p-0 m-0;
+    }
+
+    .primary-color{
+        @apply bg-blue-400;
+    }
+
+    .text-on-primary{
+        @apply text-white;
+    }
+
+    .secondary-color{
+        @apply bg-green-600;
+    }
+    .dull-color{
+        @apply bg-gray-100;
+    }
+}
