@@ -12,8 +12,9 @@ function Auth() {
     const history = useHistory(); 
 
     const users = useSelector(state => state.users.users);
+    const user = useSelector(state => state.users.user);
 
-    const [userId, setUserId] = useState("none");
+    const [userId, setUserId] = useState("");
     const [allUsers, setAllUsers] = useState({})
 
     useEffect(()=>{
@@ -25,7 +26,7 @@ function Auth() {
             setAllUsers(users)
         }
 
-    }, [users])
+    }, [users, dispatch])
 
     const handleChange = (e)=>{
         e.preventDefault();
@@ -36,11 +37,11 @@ function Auth() {
     }
 
     const login = () => {
-        if(allUsers[userId] !== undefined){
+        if(userId !== ""){
             history.push(`/questions`)
-            console.log(userId + "::::::::::::")
         }
     }
+
     return (
         <div className="flex justify-center w-full">
             <div className="w-full lg:w-1/2 md:w-full min-h-0 border-2 rounded-xl overflow-hidden">
@@ -54,10 +55,10 @@ function Auth() {
 
                     <div className="px-4 w-full h-full flex flex-col justify-between"> 
 
-                        <img src={avatar} alt="avatar" className="rounded-full w-44 h-44 bg-gray-900 mx-auto my-4" />
+                        <img src={user?.id ? allUsers[userId].avatarURL : avatar} alt="avatar" className="rounded-full w-44 h-44 bg-gray-900 mx-auto my-4" />
 
                         <h2 className="font-bold text-xl my-4 text-center">
-                            SignIn
+                            Select User
                         </h2>
                         <fieldset>
                             <select
@@ -65,7 +66,7 @@ function Auth() {
                                 value={userId}
                                 onChange={handleChange}
                             >
-                                <option disabled value="none">Select User Account</option>
+                                <option disabled value="">Select User Account</option>
                                 <option value="sarahedo"> Sara Hedo </option>
                                 <option value="tylermcginnis"> Tyler McGinnis </option>
                                 <option value="johndoe"> John Doe </option>
@@ -73,7 +74,13 @@ function Auth() {
                             </select> 
                         </fieldset><br/>
 
-                        <button className="w-full secondary-color text-white h-10 mt-2" >Sign In</button>               
+                        { user?.id && <button 
+                                className="w-full secondary-color text-white h-10 mt-2" 
+                                onClick={login}
+                            >   
+                                View Questions
+                            </button>    
+                        }           
 
                     </div>
                 </div>

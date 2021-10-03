@@ -2,7 +2,8 @@ import React,{ useEffect, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 
-import {saveQuestionAnswer} from '../redux/reducers/slices/questions'
+import {saveQuestionAnswer} from '../redux/reducers/slices/questions';
+import {updateUser} from '../redux/reducers/slices/users';
 
 function Question() {
 
@@ -13,24 +14,32 @@ function Question() {
     const questions = useSelector(state => state.questions.questions);
     const user = useSelector(state => state.users.user);
     const users = useSelector(state => state.users.users);
+    const [loading, setLoading] = useState(false)
 
     const [currentQuestion, setCurrentQuestion] = useState({});
     const [answeredOrNot, setAnsweredOrNot ] = useState("");
 
-    const [answeredTotal, setAnsweredTotal] = useState([]);
+    const [optionOne, setOptionOne] = useState(0);
+    const [optionTwo, setOptionTwo] = useState(0);
 
     const [option, setOption] = useState("")
 
+    const calcPercentage = (opt, total) => {
+        if((opt === 0) || total === 0){
+            return `${0}`;
+        }else{
+            return `${Math.floor(opt / total * 100)}%`
+        }
+    }
+ 
     useEffect(()=>{
 
         if(Object.keys(questions).length > 0 ){
             const qst = questions[questionID];
             setCurrentQuestion(qst)
-            setAnsweredTotal([
-                qst.optionOne.votes.concat(qst.optionTwo.votes).length, /** Total answeres */
-                qst.optionOne.votes.length, /**option one answers */
-                qst.optionTwo.votes.length, /** option two answers */
-            ])
+
+            setOptionOne(qst.optionOne.votes.length)
+            setOptionTwo(qst.optionTwo.votes.length)
         }
 
         if(user.name){
@@ -44,15 +53,17 @@ function Question() {
             }
         }
 
-    },[questions, currentQuestion, option,user,users])
+    },[questions, currentQuestion, option,user,users, questionID])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true)
         dispatch(saveQuestionAnswer({
             authedUser: user.id,
             qid: currentQuestion.id,
             answer: option
         }))
+        dispatch(updateUser(user.id)).then(()=>setLoading(false))
     }
 
 
@@ -66,7 +77,19 @@ function Question() {
                 </h1> 
             </div>
 
-            <div className="flex p-4 bg-white items-center">
+            <div className="flex p-4 bg-white items-center relative">
+
+            { loading && <div className={
+                `
+                    w-full h-full bg-red-300 flex absolute 
+                    box-border animate-pulse place-self-center self-center
+                    justify-center items-center left-0 opacity-25
+                `
+                }>
+                    Loading...
+                </div>
+            }
+            
 
                 {users[currentQuestion.author] && <img src={users[currentQuestion.author].avatarURL} alt="avatar" className="rounded-full w-44 h-44 bg-gray-900 mr-2 border" />}
 
@@ -156,15 +179,15 @@ function Question() {
                                             `w-2/3 h-full rounded-md flex justify-end items-center pr-2
                                             ${user.answers[questionID] === "optionOne" ? "bg-green-400 text-white" : "bg-gray-400"}`
                                         }
-                                        style={{width: `${answeredTotal[1]/answeredTotal[0] * 100}%`}}
+                                        style={{width: `${calcPercentage(optionOne, optionOne + optionTwo)}`}}
                                     >
 
-                                        {`${answeredTotal[1]/answeredTotal[0] * 100}%`}
+                                        {`${calcPercentage(optionOne, optionOne + optionTwo)}`}
 
                                     </div>
                                 </div>
                                 <p className="text-center">
-                                    {answeredTotal[1]} out of {answeredTotal[0]}
+                                    {optionOne} out of {optionOne + optionTwo}
                                 </p>
                             </fieldset><br/>
 
@@ -201,16 +224,16 @@ function Question() {
                                             `h-full rounded-md flex justify-end items-center pr-2
                                             ${user.answers[questionID] === "optionTwo" ? "bg-green-400 text-white" : "bg-gray-400"}`
                                         }
-                                        style={{width: `${answeredTotal[2]/answeredTotal[0] * 100}%`}}
+                                        style={{width: calcPercentage(optionTwo, optionOne + optionTwo)}}
                                     >
 
-                                        {`${answeredTotal[2]/answeredTotal[0] * 100}%`}
+                                        {calcPercentage(optionTwo, optionOne + optionTwo)}
 
                                     </div>
                                 </div>
 
                                 <p className="text-center">
-                                    {answeredTotal[1]} out of {answeredTotal[0]}
+                                    {optionTwo} out of {optionOne + optionTwo}
                                 </p>
                             </fieldset><br/>              
 

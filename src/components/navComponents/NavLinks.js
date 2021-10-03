@@ -8,7 +8,7 @@ function NavLinks() {
             role="navigation"
         >
             <li>
-                <Link to="/questions"> Home </Link>
+                <Link to="/questions"> Questions </Link>
             </li>
 
             <li>

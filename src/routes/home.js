@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import QuestionAbbr from '../components/QuestionAbbr';
 
 import {useDispatch, useSelector} from 'react-redux';
@@ -16,20 +16,7 @@ function Home() {
 
     const [questionsList, setQuestionsList] = useState([]);
 
-    useEffect(()=>{
-        if(Object.keys(questions).length < 1){
-            dispatch(fetchQuestions()) // Fetch all questions
-            dispatch(fetchAllUsers()) // Fetch all users
-        }
-    },[dispatch,questions])
-
-    useEffect(()=>{
-        if(usersState.user.name){
-            filterQuestions("answered")
-        }
-    },[questions,usersState])
-
-    const filterQuestions = (query)=>{
+    const filterQuestions = useCallback((query) => {
         if(query === "answered"){
             const filter = Object.entries(questions).filter((question)=>{
                 return Object.keys(usersState.user.answers).includes(question[0])
@@ -43,9 +30,20 @@ function Home() {
             setQuestionsToShow("unanswered")
             setQuestionsList(filter)
         }
-    }
-    
+    },[questions, usersState.user.answers])
 
+    useEffect(()=>{
+        if(Object.keys(questions).length < 1){
+            dispatch(fetchQuestions()) // Fetch all questions
+            dispatch(fetchAllUsers()) // Fetch all users
+        }
+    },[dispatch,questions])
+
+    useEffect(()=>{
+        if(usersState.user.name){
+            filterQuestions("answered")
+        }
+    },[questions,usersState, filterQuestions])
 
     return (
         <div className="flex justify-center w-full">
@@ -74,7 +72,7 @@ function Home() {
                 <div className={`w-full min-h-0 ${usersState.loading ? "py-60" : "p-10"} flex flex-col space-y-5`}>
 
                     {
-                        (usersState.loading && Object.keys(questions).length < 1) && <svg className="place-self-center animate-spin h-10 w-10 mr-3 bg-white border-r-4 border-green-400 rounded-full" viewBox="0 0 24 24">/** ... */</svg>
+                        (usersState.loading && Object.keys(questions).length < 1) && <svg className="place-self-center animate-spin h-10 w-10 mr-3 bg-white border-r-4 border-green-400 rounded-full" viewBox="0 0 24 24">{/** ... */}</svg>
                     }
 
                     {

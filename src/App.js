@@ -1,5 +1,7 @@
-import {useEffect} from 'react'
-import { Route, Switch } from "react-router";
+import React from 'react'
+import { Route, Switch} from "react-router";
+import {useSelector} from 'react-redux'; 
+
 import Nav from "./components/navComponents/Nav";
 import Home from "./routes/home";
 import New from "./routes/new";
@@ -9,6 +11,8 @@ import questionID from "./routes/questionID";
 
 
 function App() {
+    
+    const user = useSelector(state => state.users.user);
 
     return (
         <>
@@ -18,10 +22,10 @@ function App() {
 
                 <Switch>
                     <Route exact path="/" component={Auth} />
-                    <Route path="/questions" component={Home} />
-                    <Route path="/question/:questionID" component={questionID} />
-                    <Route path="/new" component={New} />
-                    <Route path="/board" component={Board} />
+                    <Route path="/questions" component={user?.id ? Home : Auth} />
+                    <Route path="/question/:questionID" component={user?.id ? questionID: Auth} />
+                    <Route path="/new" component={user?.id ? New : Auth} />
+                    <Route path="/board" component={user?.id ? Board : Auth} />
                 </Switch>
            
             </div>

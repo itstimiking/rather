@@ -14,7 +14,7 @@ function QuestionAbbr({question}) {
         if(users[question.author]){
             setAvatar(users[question.author].avatarURL);
         }
-    },[users])
+    },[users, question.author])
 
     return (
         <div className="w-full min-h-0 border-2 rounded-xl overflow-hidden">

@@ -34,6 +34,7 @@ const slice = createSlice({
 // Actions generated from the slice
 export const {
     setUser,
+    logoutUser,
     getAllUsers,
     getUsersFailure,
     startLoading
@@ -55,3 +56,13 @@ export const fetchAllUsers = ()=> async (dispatch) => {
 
     }
 };
+
+export const updateUser = (userId) => async (dispatch) => {
+    try{
+        const response = await _getUsers();
+        const user = response[userId]
+        dispatch(setUser(user))
+    }catch(err){
+        dispatch(getUsersFailure())
+    }
+}
