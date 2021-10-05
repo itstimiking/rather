@@ -3,26 +3,26 @@ import {useParams} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {saveQuestionAnswer} from '../redux/reducers/slices/questions';
-import {updateUser} from '../redux/reducers/slices/users';
+import {fetchAllUsers, updateUser, startLoading} from '../redux/reducers/slices/users';
 
 function Question() {
 
-    const { questionID } = useParams();
+    const { question_id } = useParams();
 
     const dispatch = useDispatch();
 
     const questions = useSelector(state => state.questions.questions);
     const user = useSelector(state => state.users.user);
     const users = useSelector(state => state.users.users);
-    const [loading, setLoading] = useState(false)
+    const loading = useSelector(state=>state.users.loading)
 
-    const [currentQuestion, setCurrentQuestion] = useState({});
+    const currentQuestion = questions[question_id];
     const [answeredOrNot, setAnsweredOrNot ] = useState("");
 
     const [optionOne, setOptionOne] = useState(0);
     const [optionTwo, setOptionTwo] = useState(0);
 
-    const [option, setOption] = useState("")
+    const [option, setOption] = useState("");
 
     const calcPercentage = (opt, total) => {
         if((opt === 0) || total === 0){
@@ -35,14 +35,11 @@ function Question() {
     useEffect(()=>{
 
         if(Object.keys(questions).length > 0 ){
-            const qst = questions[questionID];
-            setCurrentQuestion(qst)
-
-            setOptionOne(qst.optionOne.votes.length)
-            setOptionTwo(qst.optionTwo.votes.length)
+            setOptionOne(currentQuestion.optionOne.votes.length)
+            setOptionTwo(currentQuestion.optionTwo.votes.length)
         }
 
-        if(user.name){
+        if(user.name && currentQuestion?.id){
 
             const arr = Object.keys(user.answers);
 
@@ -53,17 +50,28 @@ function Question() {
             }
         }
 
-    },[questions, currentQuestion, option,user,users, questionID])
+    },[questions,currentQuestion, option,user,users, question_id])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true)
+        dispatch(startLoading())
         dispatch(saveQuestionAnswer({
             authedUser: user.id,
             qid: currentQuestion.id,
             answer: option
         }))
-        dispatch(updateUser(user.id)).then(()=>setLoading(false))
+
+        dispatch(updateUser(user.id))
+        dispatch(fetchAllUsers());
+    }
+
+    if(!currentQuestion?.id){
+        return (
+            <div>
+                <h1>404 Page</h1>
+                <p>Question does not exist</p>
+            </div>
+        )
     }
 
 
@@ -85,7 +93,8 @@ function Question() {
                     box-border animate-pulse place-self-center self-center
                     justify-center items-center left-0 opacity-25
                 `
-                }>
+                }
+                >
                     Loading...
                 </div>
             }
@@ -149,13 +158,13 @@ function Question() {
                             <fieldset 
                                 className={
                                     `rounded-lg border-2 flex flex-col relative p-5
-                                    ${user.answers[questionID] === "optionOne" ? "border-green-400 bg-green-100" : "bg-gray-100 border-gray-200"}
+                                    ${user.answers[question_id] === "optionOne" ? "border-green-400 bg-green-100" : "bg-gray-100 border-gray-200"}
                                     `
                                 }
                             >
 
                                 { /** Your vote */
-                                    user.answers[questionID] === "optionOne" && (<p 
+                                    user.answers[question_id] === "optionOne" && (<p 
                                         className={
                                             `absolute self-end -right-5 -top-6 text-gray-600 leading-tight rounded-full 
                                             flex justify-center items-center w-12 h-12 text-sm font-black bg-yellow-300`
@@ -177,7 +186,7 @@ function Question() {
                                     <div 
                                         className={
                                             `w-2/3 h-full rounded-md flex justify-end items-center pr-2
-                                            ${user.answers[questionID] === "optionOne" ? "bg-green-400 text-white" : "bg-gray-400"}`
+                                            ${user.answers[question_id] === "optionOne" ? "bg-green-400 text-white" : "bg-gray-400"}`
                                         }
                                         style={{width: `${calcPercentage(optionOne, optionOne + optionTwo)}`}}
                                     >
@@ -194,13 +203,13 @@ function Question() {
                             <fieldset
                                 className={
                                     `border-r rounded-lg bg-gray-100 border-2 flex flex-col relative p-5
-                                    ${user.answers[questionID] === "optionTwo" ? "border-green-400 bg-green-100" : "bg-gray-100 border-gray-200"}
+                                    ${user.answers[question_id] === "optionTwo" ? "border-green-400 bg-green-100" : "bg-gray-100 border-gray-200"}
                                     `
                                 }
                             >
 
                                 {/** Your vote */
-                                    user.answers[questionID] === "optionTwo" && (<p 
+                                    user.answers[question_id] === "optionTwo" && (<p 
                                         className={
                                             `absolute self-end -right-5 -top-6 text-gray-600 leading-tight rounded-full 
                                             flex justify-center items-center w-12 h-12 text-sm font-black bg-yellow-300`
@@ -222,7 +231,7 @@ function Question() {
                                     <div 
                                         className={
                                             `h-full rounded-md flex justify-end items-center pr-2
-                                            ${user.answers[questionID] === "optionTwo" ? "bg-green-400 text-white" : "bg-gray-400"}`
+                                            ${user.answers[question_id] === "optionTwo" ? "bg-green-400 text-white" : "bg-gray-400"}`
                                         }
                                         style={{width: calcPercentage(optionTwo, optionOne + optionTwo)}}
                                     >

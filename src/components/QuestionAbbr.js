@@ -43,7 +43,7 @@ function QuestionAbbr({question}) {
 
                     <button 
                         className="w-full border-2 hover:bg-gray-200 h-10 mt-2" 
-                        onClick={()=> history.push(`/question/${question.id}`)}
+                        onClick={()=> history.push(`/questions/${question.id}`)}
                     >
                         View Full
                     </button>               

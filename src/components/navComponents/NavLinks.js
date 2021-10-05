@@ -12,7 +12,7 @@ function NavLinks() {
             </li>
 
             <li>
-                <Link to="/new"> New Question </Link>
+                <Link to="/add"> New Question </Link>
             </li>
 
             <li>

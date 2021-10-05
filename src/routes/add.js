@@ -1,11 +1,14 @@
 import React,{useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 
 import {createQuestion} from "../redux/reducers/slices/questions";
+import { fetchAllUsers,updateUser } from '../redux/reducers/slices/users';
 
-function New() {
+function Add() {
 
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const user = useSelector(state => state.users.user);
     const loading = useSelector(state => state.users.loading);
@@ -32,9 +35,14 @@ function New() {
                 optionTwoText: optionTwo, 
                 author: user.id
             }))
+            
+            dispatch(updateUser(user.id))
+            dispatch(fetchAllUsers())
 
+            
             setOptionOne("")
             setOptionTwo("")
+            history.push("/")
         }
     }
 
@@ -97,4 +105,4 @@ function New() {
     )
 }
 
-export default New;
+export default Add;

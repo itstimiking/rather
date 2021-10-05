@@ -1,14 +1,11 @@
 import React from "react";
 import {useSelector} from 'react-redux';
-import { useLocation} from "react-router";
 
 import NavAvatar from "./NavAvatar";
 import NavLinks from "./NavLinks";
 
 function Nav() {
 
-    const location = useLocation();
-    console.log(location.pathname)
     const user = useSelector(state => state.users.user);
 
     return (

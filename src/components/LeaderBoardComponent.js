@@ -1,10 +1,13 @@
 import React from 'react';
+import {useSelector} from 'react-redux';
 
 
 function LeaderBoardComponent({user}) {
 
-    const answered = Object.keys(user.answers).length;
-    const asked = user.questions.length
+    const users = useSelector(state => state.users.users);
+
+    const answered = Object.keys(users[user.id].answers).length;
+    const asked = users[user.id].questions.length
 
     return (
         <div className=" relative flex p-2 w-full lg:w-1/2 md:w-full min-h-0 border-2 rounded-xl overflow-hidden items-center">
