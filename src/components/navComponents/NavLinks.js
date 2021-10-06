@@ -16,7 +16,7 @@ function NavLinks() {
             </li>
 
             <li>
-                <Link to="/board"> Leader Board </Link>
+                <Link to="/leaderboard"> Leader Board </Link>
             </li>
         </ul>
     )

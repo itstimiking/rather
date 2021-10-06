@@ -16,13 +16,10 @@ const slice = createSlice({
         startLoading: (state) => {
             state.loading = true;
         },
-        finishedLoading: (state)=>{
-            state.loading = false;
-            state.hasErrors = false;
-        },
         addQuestion: (state, action) => {
             state.questions = {...action.payload.questions, [action.payload.formattedQuestion.id]: action.payload.formattedQuestion }
-            
+            state.loading = false;
+            state.hasErrors = false;
         },
         getQuestionsSuccess: (state, action) => {
             state.questions = action.payload;
@@ -41,7 +38,6 @@ const slice = createSlice({
 const {
     addQuestion,
     startLoading,
-    finishedLoading,
     getQuestionsFailure,
     getQuestionsSuccess,
 } = slice.actions;
@@ -69,8 +65,11 @@ export const fetchQuestions = ()=> async (dispatch) => {
 export const saveQuestionAnswer = ({authedUser, qid, answer}) => async (dispatch) =>{
     try{
         dispatch(startLoading())
+
         _saveQuestionAnswer({authedUser, qid, answer})
-        .then(()=>dispatch(finishedLoading()))
+        .then(()=>{
+            dispatch(fetchQuestions())
+        })
     } catch(err){
         dispatch(getQuestionsFailure());
     }
@@ -82,7 +81,6 @@ export const createQuestion = (question) => async ( dispatch) => {
         _saveQuestion(question)
         .then(res=> {
             dispatch(addQuestion(res))
-            dispatch(finishedLoading())
         })
     } catch (error) {
         dispatch(getQuestionsFailure());

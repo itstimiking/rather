@@ -3,7 +3,7 @@ import {useParams} from 'react-router-dom';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {saveQuestionAnswer} from '../redux/reducers/slices/questions';
-import {fetchAllUsers, updateUser, startLoading} from '../redux/reducers/slices/users';
+import {fetchAllUsers, updateUser} from '../redux/reducers/slices/users';
 
 function Question() {
 
@@ -54,7 +54,6 @@ function Question() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        dispatch(startLoading())
         dispatch(saveQuestionAnswer({
             authedUser: user.id,
             qid: currentQuestion.id,
@@ -136,7 +135,7 @@ function Question() {
 
                                 <input 
                                     type="submit"
-                                    value="Button"
+                                    value="Vote"
                                     className="w-full secondary-color text-white h-10 mt-2" 
                                     
                                 /> 
