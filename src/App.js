@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux';
 import Nav from "./components/navComponents/Nav";
 import Home from "./routes/home";
 import Add from "./routes/add";
-import Board from "./routes/board";
+import Board from "./routes/leaderboard";
 import Auth from "./routes/auth";
 import questionID from "./routes/questionID";
 
@@ -25,7 +25,7 @@ function App() {
                     <Route path="/auth" component={Auth} />
                     <Route path="/questions/:question_id" component={user?.id ? questionID: Auth} />
                     <Route path="/add" component={user?.id ? Add : Auth} />
-                    <Route path="/board" component={user?.id ? Board : Auth} />
+                    <Route path="/leaderboard" component={user?.id ? Board : Auth} />
                 </Switch>
            
             </div>
