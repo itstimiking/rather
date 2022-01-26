@@ -17,6 +17,10 @@ const slice = createSlice({
         startLoading: (state) =>{
             state.loading = true;
         },
+        finishedLoading: (state)=>{
+            state.loading = false;
+            state.hasErrors = false;
+        },
         setUser: (state, action) => {
             state.user = action.payload;
         },
@@ -34,6 +38,7 @@ const slice = createSlice({
 // Actions generated from the slice
 export const {
     setUser,
+    finishedLoading,
     logoutUser,
     getAllUsers,
     getUsersFailure,

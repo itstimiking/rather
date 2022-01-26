@@ -22,26 +22,29 @@ function Home() {
                 return Object.keys(usersState.user.answers).includes(question[0])
             })
             setQuestionsToShow("answered")
+            filter.sort((a, b) => b[1].timestamp - a[1].timestamp)
             setQuestionsList(filter)
         }else{
             const filter = Object.entries(questions).filter((question)=>{
                 return !Object.keys(usersState.user.answers).includes(question[0])
             })
+
             setQuestionsToShow("unanswered")
+            filter.sort((a, b) => b[1].timestamp - a[1].timestamp)
             setQuestionsList(filter)
         }
     },[questions, usersState.user.answers])
 
     useEffect(()=>{
         if(Object.keys(questions).length < 1){
-            dispatch(fetchQuestions()) // Fetch all questions
-            dispatch(fetchAllUsers()) // Fetch all users
+            dispatch(fetchQuestions())
+            dispatch(fetchAllUsers())
         }
     },[dispatch,questions])
 
     useEffect(()=>{
         if(usersState.user.name){
-            filterQuestions("answered")
+            filterQuestions("unanswered")
         }
     },[questions,usersState, filterQuestions])
 

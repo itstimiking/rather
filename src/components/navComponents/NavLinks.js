@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 function NavLinks() {
     return (
         <ul 
-            className="list-none font-bold pb-2 h-full items-end" 
+            className="list-none font-bold pb-2 h-full items-end flex" 
             role="navigation"
         >
             <li>
@@ -12,7 +12,7 @@ function NavLinks() {
             </li>
 
             <li>
-                <Link to="/new"> New Question </Link>
+                <Link to="/add"> New Question </Link>
             </li>
 
             <li>

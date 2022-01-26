@@ -46,7 +46,7 @@ function Auth() {
         <div className="flex justify-center w-full">
             <div className="w-full lg:w-1/2 md:w-full min-h-0 border-2 rounded-xl overflow-hidden">
 
-                <div className="dull-color h-14 flex flex-col items-center justify-center px-4">
+                <div className="dull-color text-center h-14 flex flex-col items-center justify-center px-4 py-20">
                     <h1 className="text-2xl font-black"> Welcome to the would you rather app </h1> 
                     <p>Please sign in to continue..</p>
                 </div>

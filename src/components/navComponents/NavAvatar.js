@@ -18,10 +18,14 @@ function NavAvatar() {
     }
 
     return (
-        <div className="flex w-2/5 items-end justify-end p-2">
-            <span>
-                {user?.name ? `Hello ${user.name}` : "Dont be a stranger" }
-            </span>
+        <div className="flex w-2/5 items-center justify-end p-2">
+            
+            {
+                user?.name ? 
+                <span className="hidden md:flex">Hello {user.name} </span>
+                : <span className="md:flex"> Hello stranger</span>
+            }
+            
 
             {user?.avatarURL 
                 ? <img 

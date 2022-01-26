@@ -23,11 +23,11 @@ function QuestionAbbr({question}) {
                 <h1> {`${question.author} asks: `}</h1> 
             </div>
 
-            <div className="flex p-4 bg-white items-center">
-
-                <img src={avatar} alt="avatar" className="rounded-full w-44 h-44 bg-gray-900 mr-2 border" />
-
-                <div className="px-4 w-full h-full flex flex-col justify-between border-l-2"> 
+            <div className="flex flex-wrap p-4 bg-white items-center">
+                <div className="w-full md:w-1/4">
+                    <img src={avatar} alt="avatar" className="rounded-full w-44 h-44 bg-gray-900 mr-2 border" />
+                </div>
+                <div className="px-4 w-full md:w-3/4 h-full flex flex-col justify-between border-l-2"> 
 
                     <h2 className="font-black text-2xl">
                         Would you rather...
@@ -43,7 +43,7 @@ function QuestionAbbr({question}) {
 
                     <button 
                         className="w-full border-2 hover:bg-gray-200 h-10 mt-2" 
-                        onClick={()=> history.push(`/question/${question.id}`)}
+                        onClick={()=> history.push(`/questions/${question.id}`)}
                     >
                         View Full
                     </button>               
