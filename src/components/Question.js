@@ -54,6 +54,7 @@ function Question() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         dispatch(startLoading())
         dispatch(saveQuestionAnswer({
             authedUser: user.id,

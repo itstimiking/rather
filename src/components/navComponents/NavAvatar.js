@@ -14,7 +14,6 @@ function NavAvatar() {
     const logout =()=>{
         dispatch(setUser({}))
         history.push("/")
-        console.log("::::::: LOGOUT USER ::::::::")
     }
 
     return (
